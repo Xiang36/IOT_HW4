@@ -1,5 +1,6 @@
 <?php
   header("Content-Type:text/html; charset=utf-8");
+  session_start();
   //user information
   $host = "140.120.13.183";
   $user = "sensor";
@@ -7,18 +8,11 @@
 
   //database information
   $databaseName = "sensor_network";
-  $tableName = "sensor_value";
+  $tableName = "user_info";
 
-  // $username = $_POST['username'];
-
-  $username = "7105029033";
-
-  $ad = "";
-  $name = "";
-  if (!empty($_GET['add'])){
-    $name = $_GET['username'];
-    $ad = $_GET['add'];
-  }
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $_SESSION["username"] = $_POST["username"];
 
   //Connect to mysql database
   $con = mysql_connect($host,$user,$pass);
@@ -26,11 +20,8 @@
   $dbs = mysql_select_db($databaseName, $con);
 
 
-  if (!empty($ad)){
-    $result = mysql_query("SELECT * FROM $tableName WHERE address = \"$ad\" AND username = \"$name\" ORDER BY `time` ASC");
-  }else{
-    $result = mysql_query("SELECT * FROM $tableName WHERE username = \"$username\" ORDER BY `time` ASC");
-  }
+  $result = mysql_query("SELECT * FROM $tableName WHERE username = \"$username\" AND passwd  = \"$password\"");
+
   //Query database for data
 
   //store matrix

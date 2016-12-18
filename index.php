@@ -45,7 +45,7 @@
 
         function getDataSuccess2(data) {
             console.log(data)
-            console.log(" light value = " + data[0][2] + " , location name = " + data[0][4])
+            console.log(" light value = " + data[0][2] + " , location name = " + data[0][3])
             $("#con").empty();
             var val = []; // 存放光敏電阻值
             var stime = [];
@@ -109,6 +109,12 @@
             });
         }
     </script>
+
+    <?php
+      session_start();
+      if($_SESSION['username'] != '')
+        header("Location: /login.php");
+    ?>
 
 </head>
 
@@ -286,8 +292,8 @@
             map = new google.maps.Map(document.getElementById('map'), mapOptions);
             var ads = [];
             for (var i = 0; i < dataNum; i++) {
-                if ($.inArray(data[i][4].toString(), ads) == -1) {
-                    ads.push(data[i][4].toString());
+                if ($.inArray(data[i][3].toString(), ads) == -1) {
+                    ads.push(data[i][3].toString());
                     codeAddress(data[i]);
                 }
             }
@@ -296,7 +302,7 @@
         function codeAddress(data) {
             var html;
             geocoder.geocode({
-                'address': data[4].toString()
+                'address': data[3].toString()
             }, function(results, status) {
                 console.log(results)
                 if (status == google.maps.GeocoderStatus.OK) {
@@ -311,7 +317,7 @@
                     });
                     marker.addListener('click', function() {
                         html = "";
-                        html += "<h>名稱： " + data[4] + "</h><br><h>標記者： " + data[3] + "</h>";
+                        html += "<h>名稱： " + data[3] + "</h><br><h>標記者： " + data[1] + "</h>";
                         var infowindow = new google.maps.InfoWindow({
                             content: html
                         });
